@@ -1,0 +1,24 @@
+
+  <mat-form-field style="background-color: rgb(173, 169, 169); margin: 5%;" appearance="fill">
+    <!-- <mat-label>Ecris ton pokemon sale batard</mat-label> -->
+    <input matInput   style="color:black;  background-color: white;height: 5%;" placeholder="pokemon" [(ngModel)]="param" (keyup)="searchPokemon()" required>
+  </mat-form-field>
+  
+<mat-nav-list  
+infiniteScroll
+[scrollWindow]="false"
+(scrolled)="onScroll()"
+ 
+ >
+ 
+ <!-- "routerLink="/pokemon/{{pokemon.id}}" -->
+<div  style="height:100%; color:white;text-decoration: none;" >
+   <mat-list-item  *ngFor="let pokemon of pokemons"  (click)='onPokemonSelected(pokemon.id)'>
+    <img src="../../../assets/img/sprites/{{pokemon.id}}.png"  >    
+        
+    <div>{{pokemon.id}} {{pokemon.name}}</div>
+    </mat-list-item>
+  </div>
+  </mat-nav-list>
+
+  

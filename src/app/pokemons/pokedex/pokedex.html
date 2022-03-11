@@ -1,0 +1,6 @@
+<div>
+<mat-drawer-container>
+    <mat-drawer style="height: 100%; " mode="side" opened><app-pokemon-list (pokemonSelected)="onPokemonSelected($event)"></app-pokemon-list></mat-drawer>
+    <mat-drawer-content style="height: 100%; margin-top:2% ;margin-left: 35%;"> <app-pokemon-detail [pokemonId]="pokemonId"></app-pokemon-detail> </mat-drawer-content>
+  </mat-drawer-container>
+</div>
