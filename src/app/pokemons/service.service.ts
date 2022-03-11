@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import { PageData } from '../models/pageData.model';
 import { PokemonDetail } from '../models/pokemonDetail.model';
 import { Pokemon } from '../models/pokemon.model';
+import { LoginData } from '../models/loginData.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,5 +19,9 @@ export class ServiceService {
   }
   getPokemonSearch(param:String): Observable<PageData> {
     return this.http.get<PageData>('http://app-ec21e68e-3e55-42d7-b1ae-3eef7507a353.cleverapps.io/pokemons?search='+param);
+  }
+
+  postLogin(login:Object): Observable<LoginData> {
+    return this.http.post<LoginData>('http://app-ec21e68e-3e55-42d7-b1ae-3eef7507a353.cleverapps.io/auth/login',login);
   }
 }

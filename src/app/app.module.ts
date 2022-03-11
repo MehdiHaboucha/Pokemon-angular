@@ -9,9 +9,11 @@ import { PokemonsModule } from './pokemons/pokemons.module';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { FormulaireComponent } from './formulaire/formulaire.component';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FormulaireComponent
   ],
   imports: [
     BrowserModule,
