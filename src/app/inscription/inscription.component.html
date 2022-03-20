@@ -1,0 +1,20 @@
+<div class="inscription-root">
+  <div class="inscription">
+    <h1>Inscrivez Vous</h1>
+    <p *ngIf="erreurInscription!==''" style="color:red">{{erreurInscription}}</p>
+     <!-- <p *ngIf="compteCree!==''" style="color:green">{{compteCree}}</p> -->
+    <div class="inscription-inputs">
+      <div class="inscription-pseudo">
+        <label for="username">Mail : </label>
+        <input matInput type="text" [(ngModel)]="pseudo" [ngModelOptions]="{ standalone: true }" required />
+      </div>
+      <div class="insciption-password">
+        <label for="password">Password : </label>
+
+        <input matInput type="password" [(ngModel)]="motDepasse" [ngModelOptions]="{ standalone: true }" required />
+      </div>
+     
+    </div>
+     <input type="button" (click)="inscription()" id="button-inscription" class="btn btn-outline-danger button-login" value="S'inscrire" />
+  </div>
+</div>

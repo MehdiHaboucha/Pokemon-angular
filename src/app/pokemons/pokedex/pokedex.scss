@@ -1,0 +1,17 @@
+#pokedex {
+  width: 100%;
+  height: 100% !important;
+  border: 1px solid #555;
+
+  mat-drawer-container {
+    height: 100%;
+    .mat-drawer {
+      width: 18%;
+    }
+    .mat-drawer-content {
+      height: 100% !important;
+      margin-top: 8% !important;
+      margin-left: 38% !important;
+    }
+  }
+}

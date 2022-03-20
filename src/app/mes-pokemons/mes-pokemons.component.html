@@ -1,0 +1,36 @@
+<div id="mes-pokemons-pokedex">
+  <app-pokemon-list (pokemonSelected)="onPokemonSelected($event)"></app-pokemon-list>
+  <div class="mes-pokemons-titre">
+    <h2 *ngIf="success!==''" style="color:green">{{success}}</h2>
+    <h2 *ngIf="error!==''" style="color:red">{{error}}</h2>
+    <h1 style="color: white">Mes Pokémons : {{ pokemons.length }}/6</h1>
+  </div>
+  <div id="mes-pokemons-root">
+    <h1 *ngIf="!pokemons.length" style="color:white;align-self: center;">Séléction des pokémons dans le pokédex</h1>
+    <div class="mes-pokemons" *ngFor="let pok of pokemons">
+      <div class="mes-pokemons-image" [ngClass]="pok.types[0]">
+        <img width="50%" height="50%" src="../../assets/img/official-artwork/{{ pok?.id }}.png" alt="{{ pok?.name }}" />
+      </div>
+
+      <div class="mes-pokemons-description">
+        <div class="mes-pokemons-description-son">
+          <h1 class="capitalize font-semibold text-3xl mb-2">
+            {{ pok?.name
+            }}<button mat-button (click)="lancerAudio(pok.id)">
+              <mat-icon style="display: flex; justify-content: flex-start; align-items: flex-end"
+                >play_circle_outline</mat-icon
+              >
+            </button>
+          </h1>
+        </div>
+        <p>No {{ pok?.id | number: '3.' }}</p>
+        <mat-chip-list>
+          <mat-chip *ngFor="let p of pok?.types" [ngClass]="p">{{ p }}</mat-chip>
+        </mat-chip-list>
+        <button mat-raised-button color="warn" (click)="supprimerPokemon(pok.id)">Supprimer</button>
+      </div>
+    </div>
+  </div>
+  <div style="color: aliceblue" *ngIf="pokemons === []">Votre Deck est vide</div>
+</div>
+

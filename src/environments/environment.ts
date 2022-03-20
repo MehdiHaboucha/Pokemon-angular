@@ -4,14 +4,12 @@
 
 export const environment = {
   production: false,
-  
-  
 };
 
-export const login={
-  email: "francois.poire@ig2i.centralelille.fr",
-    password: "toto12345"
-}
+export const login = {
+  email: 'francois.poire@ig2i.centralelille.fr',
+  password: 'toto12345',
+};
 
 /*
  * For easier debugging in development mode, you can import the following file

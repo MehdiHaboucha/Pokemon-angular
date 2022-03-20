@@ -1,8 +1,7 @@
-import { Pokemon } from "./pokemon.model";
+import { Pokemon } from './pokemon.model';
 
 export interface PageData {
-    data:Pokemon[];
-    limit: number;
-    offset: number;
-  }
-  
+  data: Pokemon[];
+  limit: number;
+  offset: number;
+}

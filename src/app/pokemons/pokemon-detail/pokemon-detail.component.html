@@ -1,25 +1,36 @@
+<mat-card style="width: 44%; margin: 1%">
+  <mat-grid-list cols="2" rowHeight="200px">
+    <div>
+      <mat-grid-tile colspan="1" style="padding: 5px"
+        ><div style="display: flex; align-items: center; flex-direction: column">
+          <div>
+            <img mat-card-lg-image width="20%" src="../../../assets/img/official-artwork/{{ pokemon?.id }}.png" />
+          </div>
+          <p>No {{ pokemon?.id | number: '3.' }}</p>
+        </div></mat-grid-tile
+      >
 
-   <mat-card style="width: 44%;margin: 1%;">
-    
-    <mat-grid-list cols="2" rowHeight="200px">
-       <div>
-        <mat-grid-tile colspan="1" style="padding:5px"><div style="display: flex;align-items: center; flex-direction: column;"><div><img  mat-card-lg-image width="20%" src="../../../assets/img/official-artwork/{{pokemon?.id}}.png"></div> <p>No {{pokemon?.id}}</p></div></mat-grid-tile>
-        <mat-grid-tile style="padding:5px" ><mat-list>
-            <mat-list-item> {{pokemon?.name}}
-            <button mat-button (click)="lancerAudio()"><mat-icon>play_circle_outline</mat-icon></button> </mat-list-item>
-            <mat-list-item><mat-chip-list ><mat-chip *ngFor="let pok of pokemon?.types">{{pok}}</mat-chip></mat-chip-list> </mat-list-item>
-            <mat-list-item> Taille : {{pokemon?.height||'.1'}} </mat-list-item>
-            <mat-list-item> Poids : {{pokemon?.weight|| '3.'}} </mat-list-item>
-        </mat-list></mat-grid-tile>
-        
-        <mat-grid-tile colspan="2"><h1 style="color: aliceblue;font-size:18px;">{{pokemon?.description}}</h1></mat-grid-tile>
-        
-        
-        
+      <mat-grid-tile style="padding: 5px"
+        ><mat-list>
+          <mat-list-item>
+            {{ pokemon?.name }}
+            <button mat-button (click)="lancerAudio()"><mat-icon>play_circle_outline</mat-icon></button>
+          </mat-list-item>
+          <mat-list-item
+            ><mat-chip-list
+              ><mat-chip *ngFor="let pok of pokemon?.types" [ngClass]="pok">{{ pok }}</mat-chip></mat-chip-list
+            >
+          </mat-list-item>
+          <mat-list-item> Taille : {{ pokemon?.height || '.1' }} </mat-list-item>
+          <mat-list-item> Poids : {{ pokemon?.weight || '3.' }} </mat-list-item>
+        </mat-list></mat-grid-tile
+      >
+
+      <mat-grid-tile colspan="2"
+        ><h1 style="color: aliceblue; font-size: 18px">{{ pokemon?.description }}</h1></mat-grid-tile
+      >
     </div>
-    
-    
-</mat-grid-list>
-<mat-grid-list cols="3" ></mat-grid-list>
+  </mat-grid-list>
+  <mat-grid-list cols="3"></mat-grid-list>
 </mat-card>
 <!-- <button (click)="goBack()">retour pokedex</button> -->
