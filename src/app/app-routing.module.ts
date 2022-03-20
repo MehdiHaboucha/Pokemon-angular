@@ -7,8 +7,8 @@ import { FormulaireComponent } from './formulaire/formulaire.component';
 import { MesPokemonsComponent } from './mes-pokemons/mes-pokemons.component';
 import { InscriptionComponent } from './inscription/inscription.component';
 const routes: Routes = [
-  { path: '', redirectTo: '/pokemons', pathMatch: 'full' },
-  { path: 'pokemons', component: PokemonListComponent },
+  { path: '', redirectTo: '/pokedex', pathMatch: 'full' },
+  // { path: 'pokemons', component: PokemonListComponent },
   { path: 'pokemon/:id', pathMatch: 'full', component: PokemonDetailComponent },
   { path: 'pokedex', component: PokedexComponent },
   { path: 'team', component: FormulaireComponent },

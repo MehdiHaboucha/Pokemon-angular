@@ -8,7 +8,9 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'pokedex';
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
+
 
   seDeconnecter() {
     localStorage.removeItem('token');
@@ -18,6 +20,8 @@ export class AppComponent {
   }
 
   getLogIn() {
+    if(localStorage.getItem('isLoggedIn')===null)
+      return false;
     return localStorage.getItem('isLoggedIn');
   }
   getUser() {

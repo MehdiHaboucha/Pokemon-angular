@@ -63,6 +63,7 @@ export class MesPokemonsComponent implements OnInit {
       return { error: 'Le Pokemon existe déja dans votre deck',msg:'' };
     }
     this.ajouterPokemonApi(id);
+    this.lancerAudio(id);
     this.service.updateMyPokemons(this.pokemonsIds, this.token).subscribe((nb) => console.log(nb));
     return { msg: 'pokemon ajouté avec succès',error:'' };
   }
