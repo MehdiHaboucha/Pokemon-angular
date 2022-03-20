@@ -1,49 +1,49 @@
-import { Component,EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Pokemon } from 'src/app/models/pokemon.model';
-import { ServiceService } from '../service.service';
+import { ServiceService } from '../pok.service';
 
 @Component({
   selector: 'app-pokemon-list',
   templateUrl: './pokemon-list.component.html',
-  styleUrls: ['./pokemon-list.component.scss']
+  styleUrls: ['./pokemon-list.component.scss'],
 })
 export class PokemonListComponent implements OnInit {
   @Input() pokemons?: Pokemon[];
   @Output() pokemonSelected = new EventEmitter<number>();
-  param :String = '';
-  limit:number=20;
-  offset:number=0;
-  constructor(private pokemonService : ServiceService) { }
+
+  param: String = '';
+  limit: number = 20;
+  offset = 0;
+  offsetSerach = 0;
+  constructor(private pokemonService: ServiceService) {}
 
   ngOnInit(): void {
     this.getPokemons();
   }
 
-  
   getPokemons(): void {
-    this.pokemonService.getPokemons(this.limit,this.offset)
-      .subscribe(pok => this.pokemons = pok.data);
-      console.log(this.pokemons)
+    this.pokemonService.getPokemons(this.limit, 0).subscribe((pok) => {
+      this.pokemons = pok.data;
+    });
   }
-  onScroll(){
-    console.log("scroll");
-    
-    this.offset = this.offset+this.limit;
-    this.pokemonService.getPokemons(this.limit,this.offset)
-      .subscribe(pok => this.pokemons?.concat(pok.data));
-      console.log(this.offset)
+  onScroll() {
+    if (this.param === '') {
+      this.offset = this.offset + 20;
+      this.pokemonService.getPokemons(this.limit, this.offset).subscribe((mespokemon) => {
+        this.pokemons = this.pokemons?.concat(mespokemon.data);
+      });
+    }
   }
 
-  onclickPokedex(id : number){
-
+  searchPokemon() {
+    this.offset = 0;
+    this.param
+      ? this.pokemonService.getPokemonSearch(this.param, 151, 0).subscribe((pok) => {
+          this.pokemons = pok.data;
+        })
+      : this.getPokemons();
   }
-  searchPokemon(){
-    console.log(this.param);
-    this.param?this.pokemonService.getPokemonSearch(this.param)
-      .subscribe(pok => this.pokemons = pok.data):this.getPokemons();
-  }
-  onPokemonSelected(id:number){
+  onPokemonSelected(id: number) {
     this.pokemonSelected.emit(id);
   }
-
 }

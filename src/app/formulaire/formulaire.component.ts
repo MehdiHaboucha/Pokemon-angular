@@ -11,6 +11,7 @@ export class FormulaireComponent implements OnInit {
   loginData?: LoginData;
   pseudo: string = '';
   motDepasse: string = '';
+  erreurLogIn :string='';
   constructor(private service: ServiceService, private router: Router) {}
 
   ngOnInit(): void {
@@ -29,27 +30,24 @@ export class FormulaireComponent implements OnInit {
         email: this.pseudo,
         password: this.motDepasse,
       })
-      .subscribe((res) => {
-        this.loginData = res;
-        console.log('res');
-        console.log(res);
-        if (this.loginData) {
-          localStorage.setItem('user',this.pseudo);
-          localStorage.setItem('token', this.loginData?.access_token);
-          localStorage.setItem('isLoggedIn',"true");
+      .subscribe({
+      next: res=>{
+           this.erreurLogIn='';
+          localStorage.setItem('user', this.pseudo);
+          localStorage.setItem('token', res.access_token);
+          localStorage.setItem('isLoggedIn', 'true');
+          this.loginData = res;
           this.redirect();
-        } else {
-          //TODO get l'erreur
-          console.log("erreur d'authentification à getter");
-        }
-      });
+    },
+      error:error=>{this.erreurLogIn=error.error.message}
+    });
+     
   }
 
   //login clické
   login() {
     console.log('pseudo : ' + this.pseudo);
     console.log('password : ' + this.motDepasse);
-    console.log();
     this.seLogin();
   }
 }
