@@ -28,8 +28,7 @@ export class ServiceService {
   postLogin(login: Object): Observable<LoginData> {
     return this.http.post<LoginData>('http://app-ec21e68e-3e55-42d7-b1ae-3eef7507a353.cleverapps.io/auth/login', login);
   }
-  postInscription(login: Object):Observable<Object>{
-    console.log(login)
+  postInscription(login: Object): Observable<Object> {
     return this.http.post<Object>('http://app-ec21e68e-3e55-42d7-b1ae-3eef7507a353.cleverapps.io/trainers', login);
   }
   getMyPokemon(token: string): Observable<number[]> {

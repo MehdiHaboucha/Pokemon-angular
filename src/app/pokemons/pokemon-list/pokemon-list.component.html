@@ -6,7 +6,7 @@
 
   <mat-nav-list
     style="height: 90%; overflow: auto"
-    (scrolled)="onScroll()"
+    (scrolled)="onScroll($event)"
     infiniteScroll
     [scrollWindow]="false"
     [infiniteScrollDistance]="1"

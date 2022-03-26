@@ -9,19 +9,20 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'pokedex';
   constructor(private router: Router) {
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('user');
+    // localStorage.removeItem("isLoggedIn");
   }
-
 
   seDeconnecter() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('isLoggedIn');
     this.router.navigate(['/team']);
-    localStorage.setItem('isLoggedIn', 'false');
   }
 
   getLogIn() {
-    if(localStorage.getItem('isLoggedIn')===null)
-      return false;
+    if (localStorage.getItem('isLoggedIn') === null) return false;
     return localStorage.getItem('isLoggedIn');
   }
   getUser() {

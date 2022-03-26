@@ -12,15 +12,15 @@ export class MesPokemonsComponent implements OnInit {
   pokemonsIds: number[] = [];
   pokemons: PokemonDetail[] = [];
   token: string = '';
-  success:string='';
-  error:string='';
+  success: string = '';
+  error: string = '';
   @Input() pokemonId?: number;
   constructor(private service: ServiceService, private router: Router) {}
 
   ngOnInit(): void {
     this.token = localStorage.getItem('token') + '';
-    if (localStorage.getItem('user') === null) {
-      this.router.navigate(['/team']);
+    if (localStorage.getItem('isLoggedIn') === null) {
+      this.router.navigate(['/']);
     }
     this.getMyPokemons();
   }
@@ -30,47 +30,76 @@ export class MesPokemonsComponent implements OnInit {
   }
 
   getMyPokemons(): void {
-    this.service.getMyPokemon(this.token).subscribe((res) => {
-      this.pokemonsIds = res;
-      res.forEach((pokId) => {
-        this.getMyPokemonDetail(pokId).subscribe((pok) => {
-          this.pokemons?.push(pok);
+    this.service.getMyPokemon(this.token).subscribe({
+      next: (res) => {
+        this.pokemonsIds = res;
+        res.forEach((pokId) => {
+          this.getMyPokemonDetail(pokId).subscribe({
+            next: (pok) => {
+              this.pokemons?.push(pok);
+            },
+            error: (error) => {
+              if (error.status === 401 || error.status === 403) {
+                this.seDeconnecter();
+              }
+            },
+          });
         });
-      });
+      },
+      error: (error) => {
+        error;
+      },
     });
   }
 
+  seDeconnecter() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('isLoggedIn');
+    this.router.navigate(['/team']);
+  }
   onPokemonSelected(id: number) {
     this.pokemonId = id;
     const message = this.ajoutPokemon(this.pokemonId);
-    this.error=message.error;
-    this.success=message.msg;
+    this.error = message.error;
+    this.success = message.msg;
     setTimeout(() => {
-            this.error="";
-            this.success="";
-       }, 2000)
-
+      this.error = '';
+      this.success = '';
+    }, 2000);
   }
 
   ajoutPokemon(id: number) {
     // on peut pas ajouter plus de 6 pokémons
     if (this.pokemonsIds.length >= 6) {
-      console.log('Full');
-      return { error: "Il n' y a plus de place dans votre Deck.Limite 6",msg:'' };
+      return { error: "Il n' y a plus de place dans votre Deck.Limite 6", msg: '' };
     }
     if (this.pokemonsIds.includes(id)) {
-      console.log('Doublon');
-      return { error: 'Le Pokemon existe déja dans votre deck',msg:'' };
+      return { error: 'Le Pokemon existe déja dans votre deck', msg: '' };
     }
     this.ajouterPokemonApi(id);
     this.lancerAudio(id);
-    this.service.updateMyPokemons(this.pokemonsIds, this.token).subscribe((nb) => console.log(nb));
-    return { msg: 'pokemon ajouté avec succès',error:'' };
+    this.service.updateMyPokemons(this.pokemonsIds, this.token).subscribe({
+      next: (res) => {},
+      error: (error) => {
+        if (error.status === 401 || error.status === 403) {
+          this.seDeconnecter();
+        }
+      },
+    });
+    return { msg: 'pokemon ajouté avec succès', error: '' };
   }
   ajouterPokemonApi(id: number) {
     this.pokemonsIds.push(id);
-    this.getMyPokemonDetail(id).subscribe((pok) => {
-      this.pokemons?.push(pok);
+    this.getMyPokemonDetail(id).subscribe({
+      next: (pok) => {
+        this.pokemons?.push(pok);
+      },
+      error: (error) => {
+        if (error.status === 401 || error.status === 403) {
+          this.seDeconnecter();
+        }
+      },
     });
   }
   supprimerPokemon(id: number) {
@@ -80,10 +109,16 @@ export class MesPokemonsComponent implements OnInit {
       this.pokemons.findIndex((e) => e.id === id),
       1
     );
+    this.lancerAudio(id);
     this.pokemonsIds.splice(index, 1);
-    console.log(this.pokemons);
-    console.log(this.pokemonsIds);
-    this.service.updateMyPokemons(this.pokemonsIds, this.token).subscribe((nb) => console.log(nb));
+    this.service.updateMyPokemons(this.pokemonsIds, this.token).subscribe({
+      next: (res) => {},
+      error: (error) => {
+        if (error.status === 401 || error.status === 403) {
+          this.seDeconnecter();
+        }
+      },
+    });
   }
 
   lancerAudio(id: number): void {

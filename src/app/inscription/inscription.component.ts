@@ -10,19 +10,20 @@ import { ServiceService } from '../pokemons/pok.service';
 export class InscriptionComponent implements OnInit {
   pseudo: string = '';
   motDepasse: string = '';
-  erreurInscription:string="";
-  constructor(private service : ServiceService,private router:Router) {}
+  erreurInscription: string = '';
+  constructor(private service: ServiceService, private router: Router) {}
 
   ngOnInit(): void {}
 
-  inscription(){
-      console.log('pseudo : ' + this.pseudo);
-    console.log('password : ' + this.motDepasse);
-      this.service.postInscription({"email":this.pseudo.trim(),"password":this.motDepasse.trim()}).subscribe({
-        next: res=>{this.erreurInscription='';
-        this.router.navigate(["team"]);
+  inscription() {
+    this.service.postInscription({ email: this.pseudo.trim(), password: this.motDepasse.trim() }).subscribe({
+      next: (res) => {
+        this.erreurInscription = '';
+        this.router.navigate(['team']);
       },
-        error:error=>{this.erreurInscription=error.error.message}
-      });
+      error: (error) => {
+        this.erreurInscription = error.error.message;
+      },
+    });
   }
 }

@@ -313,9 +313,9 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <nav class="navbar navbar-light" style="background-color: #e50914">
   <div>
-    <a class="navbar-brand text-light" *ngIf="getLogIn() === 'false'" href="team">Log in</a>
+    <a class="navbar-brand text-light" *ngIf="!getLogIn()" href="team">Log in</a>
     <a class="navbar-brand text-light" href="pokedex">Pokedex</a>
-    <a class="navbar-brand text-light" *ngIf="getLogIn() === 'true'" href="mesPokemons">Mes Pokemons</a>
+    <a class="navbar-brand text-light" *ngIf="getLogIn()" href="mesPokemons">Mes Pokemons</a>
   </div>
 
   <div
@@ -331,7 +331,7 @@
     <p style="color: white; margin-left: 2%">{{ getUser() }}</p>
     <button
       id="button-deconnecter"
-      *ngIf="getLogIn() === 'true'"
+      *ngIf="getLogIn()"
       (click)="seDeconnecter()"
       mat-button
       style="color: white; background-color: #1976d2; margin-right: 2%"
