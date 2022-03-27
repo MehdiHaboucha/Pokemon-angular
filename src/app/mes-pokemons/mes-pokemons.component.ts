@@ -31,17 +31,23 @@ export class MesPokemonsComponent implements OnInit {
   }
 
   getMyPokemons(): void {
-     this.service.getMyPokemon(this.token).pipe(
-      switchMap(pokemonIds => {
-        const pokemonObservables: Observable<PokemonDetail>[] = pokemonIds.map(id => this.getMyPokemonDetail(id));
-        return forkJoin(pokemonObservables);
-    })
-  ).subscribe({next:pokemons => this.pokemons = pokemons,error: (error) => {
-              if (error.status === 401 || error.status === 403) {
-                this.seDeconnecter();
-              }
-            }});
-  
+    this.service
+      .getMyPokemon(this.token)
+      .pipe(
+        switchMap((pokemonIds) => {
+          const pokemonObservables: Observable<PokemonDetail>[] = pokemonIds.map((id) => this.getMyPokemonDetail(id));
+          return forkJoin(pokemonObservables);
+        })
+      )
+      .subscribe({
+        next: (pokemons) => (this.pokemons = pokemons),
+        error: (error) => {
+          if (error.status === 401 || error.status === 403) {
+            this.seDeconnecter();
+          }
+        },
+      });
+
     // this.service.getMyPokemon(this.token).subscribe({
     //   next: (res) => {
     //     this.pokemonsIds = res;
@@ -83,29 +89,41 @@ export class MesPokemonsComponent implements OnInit {
 
   ajoutPokemon(id: number) {
     // on peut pas ajouter plus de 6 pokémons
-    if (this.pokemonsIds.length >= 6) {
+    if (this.pokemons.length >= 6) {
       return { error: "Il n' y a plus de place dans votre Deck.Limite 6", msg: '' };
     }
-    if (this.pokemonsIds.includes(id)) {
+    const doublon = this.pokemons.find((e) => e.id === id);
+    console.log(doublon);
+    if (doublon !== undefined) {
       return { error: 'Le Pokemon existe déja dans votre deck', msg: '' };
     }
     this.ajouterPokemonApi(id);
     this.lancerAudio(id);
-    this.service.updateMyPokemons(this.pokemonsIds, this.token).subscribe({
-      next: (res) => {},
-      error: (error) => {
-        if (error.status === 401 || error.status === 403) {
-          this.seDeconnecter();
-        }
-      },
-    });
+
     return { msg: 'pokemon ajouté avec succès', error: '' };
   }
   ajouterPokemonApi(id: number) {
-    this.pokemonsIds.push(id);
+    //gestion affichage
     this.getMyPokemonDetail(id).subscribe({
       next: (pok) => {
         this.pokemons?.push(pok);
+        this.service
+          .updateMyPokemons(
+            this.pokemons.map((pok) => {
+              return pok.id;
+            }),
+            this.token
+          )
+          .subscribe({
+            next: (res) => {
+              this.pokemons;
+            },
+            error: (error) => {
+              if (error.status === 401 || error.status === 403) {
+                this.seDeconnecter();
+              }
+            },
+          });
       },
       error: (error) => {
         if (error.status === 401 || error.status === 403) {
@@ -113,24 +131,28 @@ export class MesPokemonsComponent implements OnInit {
         }
       },
     });
+    //gestion Api
+    // this.pokemonsIds = this.pokemons.map(pok=>{return pok.id});
+    //   this.pokemonsIds.push(id);
   }
   supprimerPokemon(id: number) {
-    const index = this.pokemonsIds.indexOf(id);
-    const indexPoke = this.pokemons.findIndex((e) => e.id === id);
-    this.pokemons.splice(
-      this.pokemons.findIndex((e) => e.id === id),
-      1
-    );
+    this.pokemons = this.pokemons.filter((pok) => pok.id !== id);
     this.lancerAudio(id);
-    this.pokemonsIds.splice(index, 1);
-    this.service.updateMyPokemons(this.pokemonsIds, this.token).subscribe({
-      next: (res) => {},
-      error: (error) => {
-        if (error.status === 401 || error.status === 403) {
-          this.seDeconnecter();
-        }
-      },
-    });
+    this.service
+      .updateMyPokemons(
+        this.pokemons.map((pok) => {
+          return pok.id;
+        }),
+        this.token
+      )
+      .subscribe({
+        next: (res) => {},
+        error: (error) => {
+          if (error.status === 401 || error.status === 403) {
+            this.seDeconnecter();
+          }
+        },
+      });
   }
 
   lancerAudio(id: number): void {

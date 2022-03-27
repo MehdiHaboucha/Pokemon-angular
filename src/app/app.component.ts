@@ -8,9 +8,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'pokedex';
-  constructor(private router: Router) {
-      
-  }
+  constructor(private router: Router) {}
 
   seDeconnecter() {
     localStorage.removeItem('token');

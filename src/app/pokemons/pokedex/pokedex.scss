@@ -6,12 +6,12 @@
   mat-drawer-container {
     height: 100%;
     .mat-drawer {
-      width: 18%;
+      width: 200px;
     }
     .mat-drawer-content {
-      height: 100% !important;
-      margin-top: 8% !important;
-      margin-left: 38% !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }
