@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { forkJoin, Observable, switchMap } from 'rxjs';
 import { PokemonDetail } from '../models/pokemonDetail.model';
 import { ServiceService } from '../pokemons/pok.service';
 
@@ -30,26 +31,37 @@ export class MesPokemonsComponent implements OnInit {
   }
 
   getMyPokemons(): void {
-    this.service.getMyPokemon(this.token).subscribe({
-      next: (res) => {
-        this.pokemonsIds = res;
-        res.forEach((pokId) => {
-          this.getMyPokemonDetail(pokId).subscribe({
-            next: (pok) => {
-              this.pokemons?.push(pok);
-            },
-            error: (error) => {
+     this.service.getMyPokemon(this.token).pipe(
+      switchMap(pokemonIds => {
+        const pokemonObservables: Observable<PokemonDetail>[] = pokemonIds.map(id => this.getMyPokemonDetail(id));
+        return forkJoin(pokemonObservables);
+    })
+  ).subscribe({next:pokemons => this.pokemons = pokemons,error: (error) => {
               if (error.status === 401 || error.status === 403) {
                 this.seDeconnecter();
               }
-            },
-          });
-        });
-      },
-      error: (error) => {
-        error;
-      },
-    });
+            }});
+  
+    // this.service.getMyPokemon(this.token).subscribe({
+    //   next: (res) => {
+    //     this.pokemonsIds = res;
+    //     res.forEach((pokId) => {
+    //       this.getMyPokemonDetail(pokId).subscribe({
+    //         next: (pok) => {
+    //           this.pokemons?.push(pok);
+    //         },
+    //         error: (error) => {
+    //           if (error.status === 401 || error.status === 403) {
+    //             this.seDeconnecter();
+    //           }
+    //         },
+    //       });
+    //     });
+    //   },
+    //   error: (error) => {
+    //     error;
+    //   },
+    // });
   }
 
   seDeconnecter() {

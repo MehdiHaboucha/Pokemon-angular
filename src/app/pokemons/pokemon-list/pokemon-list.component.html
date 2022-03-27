@@ -1,9 +1,10 @@
 <div id="pokemon-list">
   <mat-form-field appearance="fill">
-    <!-- <mat-label>Ecris ton pokemon sale batard</mat-label> -->
-    <input matInput placeholder="pokemon" [(ngModel)]="param" (keyup)="searchPokemon()" required />
+    <mat-label>Pokemon</mat-label>
+    <input matInput style="color: white;" placeholder="pokemon" [(ngModel)]="param" (keyup)="searchPokemon()" required />
   </mat-form-field>
-
+<div ><h3 style="color: white;">Nombre de pokemon :{{pokemons?.length}}</h3></div>
+<div *ngIf="pokemons?.length  === 0"><h3 style="color: white;">Aucun Pokémon trouvé</h3></div>
   <mat-nav-list
     style="height: 90%; overflow: auto"
     (scrolled)="onScroll($event)"
@@ -21,4 +22,5 @@
       </mat-list-item>
     </div>
   </mat-nav-list>
-</div>
+</div>  
+
