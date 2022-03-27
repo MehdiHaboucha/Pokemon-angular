@@ -1,9 +1,9 @@
 <div id="pokedex">
   <mat-drawer-container autosize>
-    <mat-drawer mode="side" style="width: 200px" opened>
-      <app-pokemon-list (pokemonSelected)="onPokemonSelected($event)"></app-pokemon-list>
+    <mat-drawer mode="side"   opened>
+      <app-pokemon-list  (pokemonSelected)="onPokemonSelected($event)"></app-pokemon-list>
     </mat-drawer>
-    <mat-drawer-content>
+    <mat-drawer-content >
       <app-pokemon-detail [pokemonId]="pokemonId"></app-pokemon-detail>
     </mat-drawer-content>
   </mat-drawer-container>
